@@ -1,0 +1,23 @@
+services:
+  server:
+    container_name: server
+    build: ./server
+    command: python manage.py runserver 0.0.0.0:8000
+    expose:
+      - 8000
+    volumes:
+      - ./server:/app/
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    command: pnpm dev --host
+    expose:
+      - 3000
+    volumes:
+      - ./frontend:/app/
+      - /app/node_modules
+  nginx:
+    container_name: reverse_proxy
+    build: ./nginx
+    ports:
+      - 80:80
